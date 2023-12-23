@@ -70,7 +70,8 @@ parser.add_argument("-i", "--input",
                     )
 
 parser.add_argument("-s", "--search",
-                    help="Search for text"
+                    help="Search for text",
+                    nargs='*'
                     )
 
 parser.add_argument("-o", "--output",
@@ -95,14 +96,7 @@ except TypeError:
     output_file = None
 
 video = cv2.VideoCapture(input_arg)
-
-if video:
-    print("Begin video processing")
-    process_video(video, output_file)
-    print("End video processing")
-else:
-    print(f"Can't recognize filetype {input_arg}")
-
+process_video(video, output_file)
 
 if output_file:
     output_file.close()
