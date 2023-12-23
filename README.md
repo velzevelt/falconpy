@@ -6,13 +6,20 @@ Program to search for specific text in videos/images
 
 Search in video
 ```bash
-falconpy in.mp4 "find me" "hello" "The"
-in.mp4: "hello" 0:34
-in.mp4: "find me" 2:32
+falconpy -i in.mp4 -s "find me" "hello" "The"
 ```
 
 Search in image
 ```bash
-falconpy in.png "find me" "hello" "The"
-in.png: "The"
+falconpy -i in.png -s "find me" "hello" "The"
+```
+
+Extract all text
+```bash
+falconpy -i in.png -o out.txt
+```
+
+Search and extract
+```bash
+falconpy -i in.png -s "find me" "hello" "The" -o out.txt
 ```
