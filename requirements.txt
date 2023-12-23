@@ -1,0 +1,6 @@
+opencv_python==4.8.1.78
+Pillow==10.1.0
+Pillow==10.1.0
+pynput==1.7.6
+pytesseract==0.3.13
+pytesseract==0.3.10
