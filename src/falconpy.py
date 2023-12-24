@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import os
 import sys
 import cv2
 import pytesseract
@@ -114,7 +115,7 @@ parser.add_argument("--lang",
 
 parser.add_argument("--tesseract",
                     help="Specify tesseract executable path",
-                    default=""
+                    # default="./tesseract/tesseract"
                     )
 
 args = vars(parser.parse_args())
@@ -123,16 +124,38 @@ output_arg = args["output"]
 search_words = args["search"]
 lang_arg = args["lang"]
 tesseract_path = args["tesseract"]
+default_tesseract_path = os.path.normpath("./tesseract/tesseract")
 
 
-if tesseract_path:
-    pytesseract.pytesseract.tesseract_cmd = tesseract_path
+# if tesseract_path:
+#     pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
-try: 
+# try: 
+#     pytesseract.get_tesseract_version()
+# except pytesseract.TesseractNotFoundError:
+#     print("ERROR: Tesseract not found, try to specify it with --tesseract option")
+#     sys.exit(1)
+
+
+try:
     pytesseract.get_tesseract_version()
 except pytesseract.TesseractNotFoundError:
-    print("ERROR: Tesseract not found, try to specify it with --tesseract option")
-    sys.exit(1)
+    try:
+        pytesseract.pytesseract.tesseract_cmd = default_tesseract_path
+        pytesseract.get_tesseract_version()
+    except pytesseract.TesseractNotFoundError:
+        if not tesseract_path:
+            print("ERROR: Tesseract not found in $PATH, try to specify it with --tesseract option")
+            sys.exit(1)
+        else:
+            try:
+                pytesseract.pytesseract.tesseract_cmd = tesseract_path
+                pytesseract.get_tesseract_version()
+            except pytesseract.TesseractNotFoundError:
+                print("ERROR: Tesseract not found in $PATH")
+                sys.exit(1)
+
+
 
 
 if output_arg:
