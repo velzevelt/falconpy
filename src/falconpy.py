@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import sys
 import cv2
 import pytesseract
 import argparse
@@ -70,7 +71,7 @@ def process_video(video: cv2.VideoCapture, out_file):
 
             if not search_words or any( (word in frame_text) for word in search_words):
                 message = frame_message(frame_text, frame_id, fps)
-                print(message)
+                print(message, end='')
                 if out_file:
                     out_file.write(message)
             
@@ -112,7 +113,8 @@ parser.add_argument("--lang",
                     )
 
 parser.add_argument("--tesseract",
-                    help="Specify tesseract executable path"
+                    help="Specify tesseract executable path",
+                    default=""
                     )
 
 args = vars(parser.parse_args())
@@ -130,17 +132,20 @@ try:
     pytesseract.get_tesseract_version()
 except pytesseract.TesseractNotFoundError:
     print("ERROR: Tesseract not found, try to specify it with --tesseract option")
-    exit(1)
+    sys.exit(1)
 
 
-try:
-    output_file = open(output_arg, "w")
-except TypeError:
+if output_arg:
+    try:
+        output_file = open(output_arg, "w")
+    except Exception:
+        print("ERROR: Invalid --output provided")
+        sys.exit(1)
+else:
     output_file = None
 
 video = cv2.VideoCapture(input_arg)
 process_video(video, output_file)
-
 
 if output_file:
     output_file.close()
