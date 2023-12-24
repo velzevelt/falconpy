@@ -124,8 +124,9 @@ output_arg = args["output"]
 search_words = args["search"]
 lang_arg = args["lang"]
 tesseract_path = args["tesseract"]
-default_tesseract_path = os.path.normpath("_internal/tesseract/tesseract")
+default_tesseract_path = os.path.normpath(f"{__file__}/_internal/tesseract/tesseract")
 
+print(default_tesseract_path)
 
 # if tesseract_path:
 #     pytesseract.pytesseract.tesseract_cmd = tesseract_path
