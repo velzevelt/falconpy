@@ -66,7 +66,7 @@ def process_video(video: cv2.VideoCapture, out_file):
                 break
 
             gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-            frame_text = pytesseract.image_to_string(gray_frame).strip()
+            frame_text = pytesseract.image_to_string(gray_frame, lang=lang_arg).strip()
 
             if not search_words or any( (word in frame_text) for word in search_words):
                 message = frame_message(frame_text, frame_id, fps)
@@ -86,7 +86,6 @@ def process_video(video: cv2.VideoCapture, out_file):
     cv2.destroyAllWindows()
 
 
-
 parser = argparse.ArgumentParser()
 parser.add_argument("-i", "--input",
                     required=True,
@@ -103,16 +102,36 @@ parser.add_argument("-o", "--output",
                     )
 
 parser.add_argument("--fps", 
-                    help="Process video with specified framerate, 2 by default", 
-                    default=2
+                    help="Process video with specified framerate, 1 by default", 
+                    default=1
                     )
 
+parser.add_argument("--lang",
+                    help="Target language",
+                    default="eng"
+                    )
 
+parser.add_argument("--tesseract",
+                    help="Specify tesseract executable path"
+                    )
 
 args = vars(parser.parse_args())
 input_arg = args["input"]
 output_arg = args["output"]
 search_words = args["search"]
+lang_arg = args["lang"]
+tesseract_path = args["tesseract"]
+
+
+if tesseract_path:
+    pytesseract.pytesseract.tesseract_cmd = tesseract_path
+
+try: 
+    pytesseract.get_tesseract_version()
+except pytesseract.TesseractNotFoundError:
+    print("ERROR: Tesseract not found, try to specify it with --tesseract option")
+    exit(1)
+
 
 try:
     output_file = open(output_arg, "w")
@@ -121,6 +140,7 @@ except TypeError:
 
 video = cv2.VideoCapture(input_arg)
 process_video(video, output_file)
+
 
 if output_file:
     output_file.close()
