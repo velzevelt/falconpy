@@ -65,7 +65,7 @@ def process_video(video: cv2.VideoCapture, out_file):
 
 
     if to_time:
-        last_frame_id = int(video_fps * time_to_seconds(to_time))
+        last_frame_id = fps * time_to_seconds(to_time)
 
     if from_time:
         frame_id = int(video_fps * time_to_seconds(from_time))
@@ -74,7 +74,8 @@ def process_video(video: cv2.VideoCapture, out_file):
         print(f"DEBUG: Set start frame to {frame_id}")
         video.set(cv2.CAP_PROP_POS_FRAMES, frame_id)
         frame_id /= video_fps
-        last_frame_id /= video_fps
+
+    
 
     try:
         while video.isOpened() and frame_id <= last_frame_id:
@@ -143,7 +144,7 @@ parser.add_argument("--from",
                     )
 
 parser.add_argument("--to",
-                    help="Perfrom input processing with last time in h:m:s format ",
+                    help="Perfrom input processing with last time in h:m:s format",
                     )
 
 args = vars(parser.parse_args())
