@@ -71,7 +71,7 @@ def process_video(video: cv2.VideoCapture, out_file):
         frame_id = int(video_fps * time_to_seconds(from_time))
 
     if frame_id != 0:
-        print(f"DEBUG: Set start frame to {frame_id}")
+        # print(f"Set start frame to {frame_id}")
         video.set(cv2.CAP_PROP_POS_FRAMES, frame_id)
         frame_id /= video_fps
 
