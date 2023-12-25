@@ -157,7 +157,6 @@ default_tesseract_path = os.path.normpath("./_internal/tesseract/tesseract")
 from_time = args["from"]
 to_time = args["to"]
 
-print(default_tesseract_path)
 
 try:
     pytesseract.get_tesseract_version()
