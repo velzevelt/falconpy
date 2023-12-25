@@ -153,9 +153,11 @@ output_arg = args["output"]
 search_words = args["search"]
 lang_arg = args["lang"]
 tesseract_path = args["tesseract"]
-default_tesseract_path = os.path.normpath("/_internal/tesseract/tesseract")
+default_tesseract_path = os.path.normpath("./_internal/tesseract/tesseract")
 from_time = args["from"]
 to_time = args["to"]
+
+print(default_tesseract_path)
 
 try:
     pytesseract.get_tesseract_version()
