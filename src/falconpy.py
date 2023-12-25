@@ -63,7 +63,6 @@ def process_video(video: cv2.VideoCapture, out_file):
     last_frame_id = int(video.get(cv2.CAP_PROP_FRAME_COUNT))
     frame_id = 0
 
-
     if to_time:
         last_frame_id = fps * time_to_seconds(to_time)
 
@@ -75,8 +74,6 @@ def process_video(video: cv2.VideoCapture, out_file):
         video.set(cv2.CAP_PROP_POS_FRAMES, frame_id)
         frame_id /= video_fps
 
-    
-
     try:
         while video.isOpened() and frame_id <= last_frame_id:
             if relative_frame_id == fps:  # skip frames
@@ -87,6 +84,9 @@ def process_video(video: cv2.VideoCapture, out_file):
             ret, frame = video.read()
             if not ret:
                 break
+
+            if show_frames:
+                cv2.imshow("frame", frame)
 
             gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             frame_text = pytesseract.image_to_string(
@@ -147,6 +147,11 @@ parser.add_argument("--to",
                     help="Perfrom input processing with last time in h:m:s format",
                     )
 
+parser.add_argument("--show",
+                    help="Show frames while processing",
+                    action="store_true"
+                    )
+
 args = vars(parser.parse_args())
 input_arg = args["input"]
 output_arg = args["output"]
@@ -156,6 +161,7 @@ tesseract_path = args["tesseract"]
 default_tesseract_path = os.path.normpath("./_internal/tesseract/tesseract")
 from_time = args["from"]
 to_time = args["to"]
+show_frames = args["show"]
 
 
 try:
