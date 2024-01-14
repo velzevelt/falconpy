@@ -11,15 +11,15 @@ falconpy -i in.mp4 -s "find me" "hello" "The"
 
 Search in image
 ```bash
-falconpy -i in.png -s "find me" "hello" "The"
+falconpy -i in.jpg -s "find me" "hello" "The"
 ```
 
 Extract all text
 ```bash
-falconpy -i in.png -o out.txt
+falconpy -i in.jpg -o out.txt
 ```
 
 Search and extract
 ```bash
-falconpy -i in.png -s "find me" "hello" "The" -o out.txt
+falconpy -i in.jpg -s "find me" "hello" "The" -o out.txt
 ```
